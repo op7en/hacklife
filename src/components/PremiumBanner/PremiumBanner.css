@@ -1,0 +1,187 @@
+/* PremiumBanner.css */
+.premium-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для активного премиума */
+.premium-active-banner {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  border-radius: 16px;
+  padding: 20px;
+  color: #8B4513;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+  border: 2px solid #FFD700;
+}
+
+.premium-active-content {
+  text-align: center;
+}
+
+.premium-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.premium-badge h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #8B4513;
+}
+
+.premium-crown {
+  font-size: 32px;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+  }
+  to {
+    text-shadow: 0 0 10px #FFA500, 0 0 20px #FFA500;
+  }
+}
+
+.premium-expiry {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.premium-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.premium-benefits span {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Остальные стили остаются как были */
+.premium-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.premium-info {
+  flex: 1;
+}
+
+.premium-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.premium-icon {
+  font-size: 24px;
+}
+
+.premium-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.premium-description {
+  margin: 0 0 16px 0;
+  opacity: 0.9;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.premium-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.feature {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.premium-cta {
+  text-align: center;
+  min-width: 200px;
+}
+
+.price-section {
+  margin-bottom: 16px;
+}
+
+.price {
+  font-size: 40px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 0 0 10px white;
+}
+
+.period {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 4px 0 0 0;
+}
+
+.premium-button {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.premium-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.premium-note {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 8px 0 0 0;
+}
+
+@media (max-width: 768px) {
+  .premium-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .premium-cta {
+    width: 100%;
+  }
+  
+  .premium-badge {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
