@@ -1,0 +1,191 @@
+.create-account-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.create-account-section h3 {
+  margin: 0 0 20px 0;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.create-account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.create-account-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.create-account-form label {
+  font-weight: 500;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.create-account-form input,
+.create-account-form select {
+  padding: 12px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.create-account-form input:focus,
+.create-account-form select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.create-account-form input:hover,
+.create-account-form select:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.create-account-form input::placeholder {
+  color: #9ca3af;
+}
+
+.create-account-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%239ca3af' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 40px;
+}
+
+.create-account-form select option {
+  background: #374151;
+  color: #ffffff;
+}
+
+/* Стили для разных банков в выпадающем списке */
+.create-account-form select option[value="abank"],
+.create-account-form select option[value="sbank"] {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.create-account-form select option[value="vbank"] {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.create-account-form select option[value="custom"] {
+  color: #8b5cf6;
+}
+
+.create-account-button {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.create-account-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.create-account-button:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.create-account-button:disabled::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.creation-status {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.creation-status.success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.creation-status.loading {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.creation-status.error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+
+
+.create-account-hint h4 {
+  margin: 0 0 8px 0;
+  color: #3b82f6;
+  font-size: 1rem;
+}
+
+.create-account-hint p {
+  margin: 4px 0;
+  color: #d1d5db;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .create-account-section {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .create-account-section h3 {
+    font-size: 1.3rem;
+  }
+  
+  .create-account-form input,
+  .create-account-form select {
+    padding: 10px 12px;
+  }
+}

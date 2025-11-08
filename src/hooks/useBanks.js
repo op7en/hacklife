@@ -16,7 +16,7 @@ export const useBanks = () => {
       consentId: "consent-d004cc84f345",
     },
     abank: {
-      clientId: "team003-1",
+      clientId: "team003-1", 
       consentId: "consent-8bdecbd761ab",
     },
     sbank: {
@@ -32,56 +32,56 @@ export const useBanks = () => {
     const mockAccounts = [
       {
         id: `mock-${bankId}-1`,
-        name: 'Основной счет',
+        name: "Основной счет",
         balance: 150000 + Math.floor(Math.random() * 100000),
         number: `40702${Math.floor(Math.random() * 10000000000)}`,
-        currency: 'RUB',
+        currency: "RUB",
         bankName: bankId.toUpperCase(),
-        type: 'Личные',
-        status: 'Active'
+        type: "Личные",
+        status: "Active",
       },
       {
         id: `mock-${bankId}-2`,
-        name: 'Накопительный счет',
+        name: "Накопительный счет",
         balance: 50000 + Math.floor(Math.random() * 50000),
         number: `40817${Math.floor(Math.random() * 10000000000)}`,
-        currency: 'RUB',
+        currency: "RUB",
         bankName: bankId.toUpperCase(),
-        type: 'Накопления',
-        status: 'Active'
-      }
+        type: "Накопления",
+        status: "Active",
+      },
     ];
 
     const mockTransactions = [
       {
         id: `mock-trans-${Date.now()}-1`,
         date: new Date(Date.now() - 86400000).toISOString(),
-        amount: -(Math.random() * 5000 + 1000), // ОТРИЦАТЕЛЬНОЕ - расход
-        description: 'Оплата в супермаркете',
-        category: 'Продукты',
-        bankId: bankId
+        amount: -(Math.random() * 5000 + 1000),
+        description: "Оплата в супермаркете",
+        category: "Продукты",
+        bankId: bankId,
       },
       {
         id: `mock-trans-${Date.now()}-2`,
         date: new Date(Date.now() - 172800000).toISOString(),
-        amount: 75000, // ПОЛОЖИТЕЛЬНОЕ - доход
-        description: 'Зарплата',
-        category: 'Зарплата',
-        bankId: bankId
+        amount: 75000,
+        description: "Зарплата",
+        category: "Зарплата",
+        bankId: bankId,
       },
       {
         id: `mock-trans-${Date.now()}-3`,
         date: new Date(Date.now() - 259200000).toISOString(),
-        amount: -2500, // ОТРИЦАТЕЛЬНОЕ - расход
-        description: 'Оплата ЖКХ',
-        category: 'ЖКХ',
-        bankId: bankId
-      }
+        amount: -2500,
+        description: "Оплата ЖКХ",
+        category: "ЖКХ",
+        bankId: bankId,
+      },
     ];
 
-    setAccounts(prev => [...prev, ...mockAccounts]);
-    setTransactions(prev => [...prev, ...mockTransactions]);
-    setConnectedBanks(prev => [...prev.filter(id => id !== bankId), bankId]);
+    setAccounts((prev) => [...prev, ...mockAccounts]);
+    setTransactions((prev) => [...prev, ...mockTransactions]);
+    setConnectedBanks((prev) => [...prev.filter((id) => id !== bankId), bankId]);
     
     console.log(`🎉 ${bankId} подключен (мок-данные)!`);
   };
@@ -91,12 +91,10 @@ export const useBanks = () => {
       setIsLoading(true);
       setError(null);
       
-      // Пробуем реальное API, если падает - используем мок-данные
       try {
         console.log(`🔥 Пробуем реальное API для ${bankId}...`);
 
         // 1. Получаем токен банка
-        console.log("🔑 Получаем токен...");
         const tokenResponse = await fetch(
           `https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
           {
@@ -123,8 +121,7 @@ export const useBanks = () => {
 
         const { clientId, consentId } = config;
 
-        // 3. Получаем счета через межбанковский запрос
-        console.log(`💰 Получаем счета для клиента ${clientId}...`);
+        // 3. Получаем счета
         const accountsResponse = await fetch(
           `https://${bankId}.open.bankingapi.ru/accounts?client_id=${clientId}`,
           {
@@ -143,7 +140,6 @@ export const useBanks = () => {
         }
 
         const accountsData = await accountsResponse.json();
-        console.log(`✅ СЧЕТА ПОЛУЧЕНЫ ДЛЯ ${bankId}!`);
 
         // 4. Получаем балансы для каждого счета
         const accountsWithBalances = [];
@@ -166,8 +162,7 @@ export const useBanks = () => {
             let balance = 0;
             if (balanceResponse.ok) {
               const balanceData = await balanceResponse.json();
-              balance =
-                Number(balanceData.data?.balance?.[0]?.amount?.amount) || 0;
+              balance = Number(balanceData.data?.balance?.[0]?.amount?.amount) || 0;
             }
 
             accountsWithBalances.push({
@@ -189,8 +184,6 @@ export const useBanks = () => {
         if (accountsWithBalances.length > 0) {
           try {
             const firstAccountId = accountsWithBalances[0].id;
-            console.log(`📊 Получаем транзакции для счета ${firstAccountId}...`);
-
             const transactionsResponse = await fetch(
               `https://${bankId}.open.bankingapi.ru/accounts/${firstAccountId}/transactions?client_id=${clientId}`,
               {
@@ -206,26 +199,21 @@ export const useBanks = () => {
 
             if (transactionsResponse.ok) {
               const transactionsData = await transactionsResponse.json();
-              const realTransactions =
-                transactionsData.data?.transaction?.map((trans) => {
-                  const amount = Number(trans.amount?.amount) || 0;
-                  const isExpense = amount < 0;
-                  
-                  return {
-                    id: trans.transactionId,
-                    date:
-                      trans.bookingDateTime ||
-                      trans.valueDateTime ||
-                      new Date().toISOString(),
-                    amount: -amount, // 
-                    description: trans.transactionInformation || "Без описания",
-                    category: isExpense ? "Расход" : "Доход", // 
-                    bankId: bankId,
-                  };
-                }) || [];
+              const realTransactions = transactionsData.data?.transaction?.map((trans) => {
+                const amount = Number(trans.amount?.amount) || 0;
+                const isExpense = amount < 0;
+                
+                return {
+                  id: trans.transactionId,
+                  date: trans.bookingDateTime || trans.valueDateTime || new Date().toISOString(),
+                  amount: -amount,
+                  description: trans.transactionInformation || "Без описания",
+                  category: isExpense ? "Расход" : "Доход",
+                  bankId: bankId,
+                };
+              }) || [];
 
               setTransactions((prev) => [...prev, ...realTransactions]);
-              console.log("✅ Транзакции получены:", realTransactions.length);
             }
           } catch (error) {
             console.log("⚠️ Не удалось получить транзакции");
@@ -234,9 +222,7 @@ export const useBanks = () => {
 
         // 6. Сохраняем данные
         setAccounts((prev) => {
-          const filtered = prev.filter(
-            (acc) => !acc.bankName.includes(bankId.toUpperCase())
-          );
+          const filtered = prev.filter((acc) => !acc.bankName.includes(bankId.toUpperCase()));
           return [...filtered, ...accountsWithBalances];
         });
 
@@ -245,9 +231,7 @@ export const useBanks = () => {
           return updated;
         });
 
-        console.log(
-          `🎉 ${bankId} подключен (реальные данные)! Счетов: ${accountsWithBalances.length}`
-        );
+        console.log(`🎉 ${bankId} подключен (реальные данные)! Счетов: ${accountsWithBalances.length}`);
 
       } catch (apiError) {
         console.log(`❌ API ${bankId} недоступно, используем мок-данные`);
@@ -257,48 +241,382 @@ export const useBanks = () => {
     } catch (err) {
       console.error("💥 Общая ошибка:", err);
       setError(`${bankId}: ${err.message}`);
-      // При любой ошибке используем мок-данные
       await mockBankConnection(bankId);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Остальные функции без изменений
+  // Функция для получения согласия на управление счетами в VBank
+  const createAccountConsent = async (bankId) => {
+    try {
+      console.log(`🔐 Получаем согласие для создания счетов в ${bankId}...`);
+      
+      // 1. Получаем токен банка
+      const tokenResponse = await fetch(
+        `https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!tokenResponse.ok) {
+        throw new Error(`Токен: ${tokenResponse.status}`);
+      }
+
+      const tokenData = await tokenResponse.json();
+      const bankToken = tokenData.access_token;
+
+      // 2. Создаем согласие на управление счетами
+      const config = bankConfigs[bankId];
+      const { clientId } = config;
+
+      const consentResponse = await fetch(
+        `https://${bankId}.open.bankingapi.ru/account-consents?client_id=${clientId}`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bankToken}`,
+            "X-Requesting-Bank": "team003",
+          },
+          body: JSON.stringify({
+            "data": {
+              "permissions": ["ManageAccounts"],
+              "expirationDateTime": "2025-12-31T23:59:59Z"
+            }
+          })
+        }
+      );
+
+      if (!consentResponse.ok) {
+        const errorText = await consentResponse.text();
+        console.log('❌ Ошибка согласия:', errorText);
+        throw new Error(`Согласие: ${consentResponse.status}`);
+      }
+
+      const consentData = await consentResponse.json();
+      console.log('✅ Согласие получено:', consentData);
+      
+      return consentData.data?.consentId;
+
+    } catch (err) {
+      console.error('❌ Ошибка получения согласия:', err);
+      throw err;
+    }
+  };
+
+  // Функция РЕАЛЬНОГО создания счета через client_token (для ABank/SBank)
+  const createRealAccount = async (bankId, accountData) => {
+    try {
+      console.log(`🏦 Создаем реальный счет в ${bankId} через client_token...`);
+      
+      // 1. Получаем client_token (не требует согласия!)
+      const tokenResponse = await fetch(
+        `https://${bankId}.open.bankingapi.ru/auth/client-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!tokenResponse.ok) {
+        throw new Error(`Client token: ${tokenResponse.status}`);
+      }
+
+      const tokenData = await tokenResponse.json();
+      const clientToken = tokenData.access_token;
+      console.log('✅ Client token получен');
+
+      // 2. Создаем счет через API с client_token
+      const createAccountResponse = await fetch(
+        `https://${bankId}.open.bankingapi.ru/accounts?client_id=team003-1`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${clientToken}`,
+          },
+          body: JSON.stringify({
+            "account_type": accountData.accountType === 'savings' ? 'savings' : 'checking',
+            "initial_balance": Number(accountData.initialBalance) || 0
+          })
+        }
+      );
+
+      console.log('📊 Статус создания счета:', createAccountResponse.status);
+
+      if (!createAccountResponse.ok) {
+        const errorText = await createAccountResponse.text();
+        console.log('❌ Ошибка создания счета:', errorText);
+        throw new Error(`Создание счета: ${createAccountResponse.status}`);
+      }
+
+      const accountDataResponse = await createAccountResponse.json();
+      console.log('✅ Счет создан через API:', accountDataResponse);
+
+      // 3. Обрабатываем ответ и создаем локальный объект счета
+      const newAccount = {
+        id: accountDataResponse.data?.accountId || `real-${Date.now()}`,
+        name: accountData.customName || (accountData.accountType === 'savings' ? 'Накопительный счет' : 'Основной счет'),
+        balance: Number(accountData.initialBalance) || 0,
+        number: accountDataResponse.data?.accountNumber || `acc-${Date.now()}`,
+        currency: 'RUB',
+        bankName: bankId.toUpperCase(),
+        type: accountData.accountType === 'savings' ? 'Накопления' : 'Личные',
+        status: 'Active',
+        isReal: true,
+        createdVia: 'API'
+      };
+
+      // 4. Добавляем счет в состояние
+      setAccounts(prev => [...prev, newAccount]);
+
+      // 5. Добавляем транзакцию начального баланса
+      if (accountData.initialBalance > 0) {
+        const initialTransaction = {
+          id: `initial-${Date.now()}`,
+          date: new Date().toISOString(),
+          amount: Number(accountData.initialBalance),
+          description: 'Начальный баланс',
+          category: 'Доход',
+          bankId: bankId,
+          isReal: true
+        };
+        setTransactions(prev => [initialTransaction, ...prev]);
+      }
+
+      return {
+        success: true,
+        message: `✅ Счет успешно создан в ${bankId.toUpperCase()} через банковское API!`,
+        account: newAccount,
+        createdVia: 'API'
+      };
+
+    } catch (err) {
+      console.error('💥 Ошибка создания реального счета:', err);
+      throw err;
+    }
+  };
+
+  // Функция РЕАЛЬНОГО создания счета через bank_token (для VBank)
+  const createRealAccountWithConsent = async (bankId, accountData) => {
+    try {
+      console.log(`🏦 Создаем реальный счет в ${bankId} через bank_token...`);
+      
+      // 1. Получаем токен банка
+      const tokenResponse = await fetch(
+        `https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!tokenResponse.ok) {
+        throw new Error(`Токен: ${tokenResponse.status}`);
+      }
+
+      const tokenData = await tokenResponse.json();
+      const bankToken = tokenData.access_token;
+
+      // 2. Получаем конфиг
+      const config = bankConfigs[bankId];
+      const { clientId, consentId } = config;
+
+      // 3. Создаем счет через API с bank_token
+      const createAccountResponse = await fetch(
+        `https://${bankId}.open.bankingapi.ru/accounts?client_id=${clientId}`,
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bankToken}`,
+            "X-Requesting-Bank": "team003",
+            "X-Consent-Id": consentId,
+          },
+          body: JSON.stringify({
+            "account_type": accountData.accountType === 'savings' ? 'savings' : 'checking',
+            "initial_balance": Number(accountData.initialBalance) || 0
+          })
+        }
+      );
+
+      console.log('📊 Статус создания счета:', createAccountResponse.status);
+
+      if (!createAccountResponse.ok) {
+        const errorText = await createAccountResponse.text();
+        console.log('❌ Ошибка создания:', errorText);
+        
+        // Если ошибка согласия, пробуем получить новое согласие
+        if (createAccountResponse.status === 403) {
+          console.log('🔄 Пробуем получить новое согласие...');
+          const newConsentId = await createAccountConsent(bankId);
+          
+          if (newConsentId) {
+            // Обновляем конфиг с новым consentId
+            bankConfigs[bankId].consentId = newConsentId;
+            
+            // Пробуем снова с новым согласием
+            return await createRealAccountWithConsent(bankId, accountData);
+          }
+        }
+        
+        throw new Error(`Создание счета: ${createAccountResponse.status}`);
+      }
+
+      const accountDataResponse = await createAccountResponse.json();
+      console.log('✅ Счет создан через API:', accountDataResponse);
+
+      // 4. Обрабатываем ответ
+      const newAccount = {
+        id: accountDataResponse.data?.accountId || `real-${Date.now()}`,
+        name: accountData.customName || (accountData.accountType === 'savings' ? 'Накопительный счет' : 'Основной счет'),
+        balance: Number(accountData.initialBalance) || 0,
+        number: accountDataResponse.data?.accountNumber || `acc-${Date.now()}`,
+        currency: 'RUB',
+        bankName: bankId.toUpperCase(),
+        type: accountData.accountType === 'savings' ? 'Накопления' : 'Личные',
+        status: 'Active',
+        isReal: true,
+        createdVia: 'API'
+      };
+
+      setAccounts(prev => [...prev, newAccount]);
+
+      if (accountData.initialBalance > 0) {
+        const initialTransaction = {
+          id: `initial-${Date.now()}`,
+          date: new Date().toISOString(),
+          amount: Number(accountData.initialBalance),
+          description: 'Начальный баланс',
+          category: 'Доход',
+          bankId: bankId,
+          isReal: true
+        };
+        setTransactions(prev => [initialTransaction, ...prev]);
+      }
+
+      return {
+        success: true,
+        message: `✅ Счет успешно создан в ${bankId.toUpperCase()} через банковское API!`,
+        account: newAccount,
+        createdVia: 'API'
+      };
+
+    } catch (err) {
+      console.error('💥 Ошибка создания реального счета:', err);
+      throw err;
+    }
+  };
+
+  // Локальное создание (fallback)
+  const createMockAccount = async (accountData) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const { bankName, accountType, initialBalance = 0, customName } = accountData;
+        
+        const newAccount = {
+          id: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          name: customName || (accountType === 'savings' ? 'Накопительный счет' : 
+                accountType === 'business' ? 'Бизнес-счет' : 'Основной счет'),
+          balance: Number(initialBalance) || 0,
+          number: `40702${Math.floor(Math.random() * 10000000000)}`,
+          currency: 'RUB',
+          bankName: bankName.toUpperCase(),
+          type: accountType === 'savings' ? 'Накопления' : 
+                accountType === 'business' ? 'Бизнес' : 'Личные',
+          status: 'Active',
+          isCustom: true,
+          createdVia: 'MOCK'
+        };
+
+        setAccounts(prev => [...prev, newAccount]);
+
+        if (initialBalance > 0) {
+          const initialTransaction = {
+            id: `initial-${Date.now()}`,
+            date: new Date().toISOString(),
+            amount: Number(initialBalance),
+            description: 'Начальный баланс',
+            category: 'Доход',
+            bankId: bankName.toLowerCase(),
+            isReal: false
+          };
+          setTransactions(prev => [initialTransaction, ...prev]);
+        }
+
+        resolve({
+          success: true,
+          message: '✅ Счет создан (локальный режим)',
+          account: newAccount,
+          createdVia: 'MOCK'
+        });
+      }, 1000);
+    });
+  };
+
+  // Главная функция создания счета (пробует API, потом fallback)
+  const createAccount = async (accountData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { bankName } = accountData;
+      
+      // Для ABank и SBank - используем client_token (без согласия)
+      if (bankName === 'abank' || bankName === 'sbank') {
+        try {
+          console.log('🔥 Пробуем создать счет через client_token...');
+          const result = await createRealAccount(bankName, accountData);
+          return result;
+        } catch (apiError) {
+          console.log('❌ API недоступно, используем локальное создание');
+          return await createMockAccount(accountData);
+        }
+      }
+      // Для VBank - используем bank_token (требует согласие)
+      else if (bankName === 'vbank') {
+        try {
+          console.log('🔥 Пробуем создать счет в VBank через bank_token...');
+          const result = await createRealAccountWithConsent(bankName, accountData);
+          return result;
+        } catch (apiError) {
+          console.log('❌ API VBank недоступно, используем локальное создание');
+          return await createMockAccount(accountData);
+        }
+      }
+      // Для других банков - локальное создание
+      else {
+        console.log('📝 Создаем счет в локальном режиме для', bankName);
+        return await createMockAccount(accountData);
+      }
+
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const refreshData = async () => {
     const currentBanks = [...connectedBanks];
     for (const bankId of currentBanks) {
       await connectBank(bankId);
-    }
-  };
-
-  const createPaymentConsent = async (bankId, fromAccount, toAccount, amount) => {
-    try {
-      console.log("🔐 Создаем согласие на перевод через прокси...");
-      const consentResponse = await fetch(`http://localhost:3001/api/payment-consent`, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          bankId: bankId,
-          fromAccount: fromAccount,
-          toAccount: toAccount,
-          amount: amount,
-          client_id: "team003-1",
-        }),
-      });
-
-      if (!consentResponse.ok) {
-        throw new Error(`Прокси: ${consentResponse.status}`);
-      }
-
-      const consentData = await consentResponse.json();
-      return consentData.consent_id;
-    } catch (err) {
-      console.error("❌ Ошибка создания согласия:", err);
-      throw err;
     }
   };
 
@@ -320,21 +638,15 @@ export const useBanks = () => {
             throw new Error("Недостаточно средств на счете");
           }
 
-          if (amount <= 0) {
-            throw new Error("Сумма перевода должна быть больше 0");
-          }
-
-          setAccounts((prev) =>
-            prev.map((acc) => {
-              if (acc.number === fromAccount) {
-                return { ...acc, balance: acc.balance - amount };
-              }
-              if (acc.number === toAccount) {
-                return { ...acc, balance: acc.balance + amount };
-              }
-              return acc;
-            })
-          );
+          setAccounts((prev) => prev.map((acc) => {
+            if (acc.number === fromAccount) {
+              return { ...acc, balance: acc.balance - amount };
+            }
+            if (acc.number === toAccount) {
+              return { ...acc, balance: acc.balance + amount };
+            }
+            return acc;
+          }));
 
           const mockTransaction = {
             id: `mock-${Date.now()}`,
@@ -347,7 +659,7 @@ export const useBanks = () => {
 
           setTransactions((prev) => [mockTransaction, ...prev]);
 
-          const successResponse = {
+          resolve({
             success: true,
             message: "✅ Перевод выполнен успешно!",
             transactionId: `mock-transaction-${Date.now()}`,
@@ -355,9 +667,7 @@ export const useBanks = () => {
             fromAccount: fromAccount,
             toAccount: toAccount,
             timestamp: new Date().toISOString(),
-          };
-
-          resolve(successResponse);
+          });
         } catch (error) {
           setError(error.message);
           reject(error);
@@ -387,17 +697,17 @@ export const useBanks = () => {
   };
 
   useEffect(() => {
-    const savedPremium = localStorage.getItem('finhelper_premium');
-    const savedExpiry = localStorage.getItem('finhelper_premium_expiry');
+    const savedPremium = localStorage.getItem("finhelper_premium");
+    const savedExpiry = localStorage.getItem("finhelper_premium_expiry");
 
-    if (savedPremium === 'true' && savedExpiry) {
+    if (savedPremium === "true" && savedExpiry) {
       const expiryDate = new Date(savedExpiry);
       if (expiryDate > new Date()) {
         setIsPremium(true);
         setPremiumExpiry(expiryDate);
       } else {
-        localStorage.removeItem('finhelper_premium');
-        localStorage.removeItem('finhelper_premium_expiry');
+        localStorage.removeItem("finhelper_premium");
+        localStorage.removeItem("finhelper_premium_expiry");
       }
     }
   }, []);
@@ -415,6 +725,6 @@ export const useBanks = () => {
     connectBank,
     refreshData,
     makeTransfer,
-    createPaymentConsent,
+    createAccount,
   };
 };
