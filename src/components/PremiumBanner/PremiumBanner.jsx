@@ -3,8 +3,7 @@ import './PremiumBanner.css';
 
 const PremiumBanner = ({ isPremium, onActivatePremium }) => {
   const handleActivate = () => {
-    // Активируем премиум на 7 дней
-    onActivatePremium(7); // 7 дней пробного периода
+    onActivatePremium(7); 
   };
 
   if (isPremium) {
@@ -38,6 +37,7 @@ const PremiumBanner = ({ isPremium, onActivatePremium }) => {
             Расширенная аналитика, автоматические сценарии и персональные советы
           </p>
           <div className="premium-features">
+            {/* премиум вещи */}
             <span className="feature">📊 Расширенная аналитика</span>
             <span className="feature">⚡ Автоматические сценарии</span>
             <span className="feature">🔔 Бесплатные СМС-уведомления</span>
@@ -53,7 +53,7 @@ const PremiumBanner = ({ isPremium, onActivatePremium }) => {
           <button onClick={handleActivate} className="premium-button">
             Попробовать 7 дней бесплатно
           </button>
-          <p className="premium-note">Отмена в любой момент*</p>
+          <p className="premium-note">Отмена в любой момент</p>
         </div>
       </div>
     </div>

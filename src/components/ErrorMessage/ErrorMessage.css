@@ -1,29 +1,79 @@
 .error-message {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 12px;
-  padding: 20px;
+  background: linear-gradient(135deg, rgba(127, 29, 29, 0.15) 0%, rgba(185, 28, 28, 0.1) 100%);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 16px;
+  padding: 24px;
   margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 8px 32px rgba(220, 38, 38, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.error-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #ef4444, #dc2626, #b91c1c);
+  border-radius: 4px 0 0 4px;
+}
+
+.error-message::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .error-content {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .error-icon {
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f87171;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-radius: 12px;
   color: white;
   flex-shrink: 0;
+  box-shadow: 
+    0 4px 12px rgba(220, 38, 38, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 4px 12px rgba(220, 38, 38, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 
+      0 6px 20px rgba(220, 38, 38, 0.6),
+      0 4px 8px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .error-text {
@@ -31,44 +81,182 @@
 }
 
 .error-title {
-  margin: 0 0 4px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #dc2626;
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fca5a5;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #fca5a5, #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .error-description {
   margin: 0;
-  font-size: 14px;
-  color: #b91c1c;
-  line-height: 1.4;
+  font-size: 15px;
+  color: #fecaca;
+  line-height: 1.5;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .error-actions {
   display: flex;
   gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .retry-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #dc2626;
+  gap: 10px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 15px rgba(220, 38, 38, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.retry-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
 .retry-button:hover {
-  background: #b91c1c;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(220, 38, 38, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.retry-button:hover::before {
+  left: 100%;
+}
+
+.retry-button:active {
+  transform: translateY(0);
 }
 
 .retry-icon {
-  font-size: 16px;
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.retry-button:hover .retry-icon {
+  transform: rotate(180deg);
+}
+
+.secondary-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fca5a5;
+  border: 1px solid rgba(252, 165, 165, 0.3);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(252, 165, 165, 0.5);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .error-message {
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .error-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .error-icon {
+    align-self: center;
+  }
+  
+  .error-actions {
+    flex-direction: column;
+  }
+  
+  .retry-button,
+  .secondary-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-message {
+    padding: 16px;
+  }
+  
+  .error-title {
+    font-size: 18px;
+  }
+  
+  .error-description {
+    font-size: 14px;
+  }
+}
+
+@keyframes slideInError {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-message {
+  animation: slideInError 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error-message,
+  .retry-button,
+  .error-icon {
+    animation: none;
+    transition: none;
+  }
+}
+
+.retry-button:focus {
+  outline: 3px solid #fca5a5;
+  outline-offset: 2px;
+}
+
+.retry-button:focus:not(:focus-visible) {
+  outline: none;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import './LoadingSpinner.css';
 
 const LoadingSpinner = () => {
+  // создание загрузочной анимации
   return (
     <div className="loading-spinner">
       <div className="spinner-container">

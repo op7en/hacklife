@@ -6,7 +6,6 @@ const BankConnection = ({
   onConnectBank, 
   isLoading, 
   error,
-  onRefreshData 
 }) => {
   const banks = [
     { 
@@ -48,16 +47,6 @@ const BankConnection = ({
           </p>
         </div>
         
-        {connectedBanks.length > 0 && (
-          <button 
-            className="refresh-button"
-            onClick={onRefreshData}
-            disabled={isLoading}
-            title="Обновить данные"
-          >
-            🔄
-          </button>
-        )}
       </div>
 
       {error && (
@@ -116,13 +105,6 @@ const BankConnection = ({
                 ) : (
                   <div className="connected-actions">
                     <span className="success-text">✓ Успешно подключено</span>
-                    <button 
-                      className="sync-button"
-                      onClick={() => onConnectBank(bank.id)}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Синхронизация...' : 'Синхронизировать'}
-                    </button>
                   </div>
                 )}
               </div>

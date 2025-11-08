@@ -3,9 +3,11 @@
   align-items: center;
   justify-content: center;
   padding: 60px 24px;
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .spinner-container {
@@ -16,7 +18,7 @@
 .spinner {
   width: 60px;
   height: 60px;
-  border: 4px solid #e5e7eb;
+  border: 4px solid rgba(255, 255, 255, 0.2);
   border-top: 4px solid #3b82f6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -27,13 +29,13 @@
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: #ffffff;
 }
 
 .loading-subtitle {
   margin: 0;
   font-size: 14px;
-  color: #6b7280;
+  color: #d1d5db;
   line-height: 1.4;
 }
 

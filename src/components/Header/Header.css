@@ -1,6 +1,5 @@
 .app-header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -11,6 +10,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.logo p {
+  color: white;
+}
+
+.logo h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .profile-user {
@@ -29,29 +42,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   font-weight: 600;
   font-size: 14px;
   user-select: none;
-  position: relative; /* Добавь это */
+  position: relative;
 }
 
-/* Премиум-бейдж в логотипе */
-.logo h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0;
+.user-avatar span {
   display: flex;
   align-items: center;
-  gap: 8px; /* Добавь это */
+  gap: 4px;
 }
 
-.premium-badge-header {
-  font-size: 18px;
-  animation: crown-glow 2s ease-in-out infinite alternate;
-}
-
+/* Анимации */
 @keyframes crown-glow {
   from {
     transform: scale(1);
@@ -61,18 +64,6 @@
     transform: scale(1.1);
     text-shadow: 0 0 10px #FFA500, 0 0 20px #FFD700;
   }
-}
-
-/* Премиум-индикатор в аватаре */
-.user-avatar span {
-  display: flex;
-  align-items: center;
-  gap: 4px; /* Добавь это */
-}
-
-.premium-indicator {
-  font-size: 14px;
-  animation: sparkle 1.5s ease-in-out infinite;
 }
 
 @keyframes sparkle {
@@ -86,118 +77,10 @@
   }
 }
 
-/* Стили для премиум-статуса в dropdown */
-.premium-status {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #8B4513 !important; /* Переопределяем цвет */
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 12px;
-  margin-bottom: 8px;
-  text-align: center;
-  border-bottom: 1px solid #e5e7eb; /* Добавляем разделитель */
-}
-
-/* Обновляем стили dropdown для учета премиум-статуса */
-.dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  width: max-content;
-  background: white;
-  padding: 8px 0; /* Меняем на вертикальный padding */
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: none;
-}
-
-.dropdown p {
-  font-size: 14px;
-  color: #ef4444;
-  margin: 0;
-  cursor: pointer;
-  transition: color 0.2s;
-  padding: 8px 16px; /* Добавляем padding для всех пунктов */
-}
-
-.dropdown p:hover {
-  color: #dc2626;
-  background: #f9fafb; /* Добавляем фон при hover */
-}
-
-/* Первый пункт (премиум-статус) должен быть другого цвета */
-.dropdown p:first-child {
-  color: #8B4513 !important; /* Коричневый для премиума */
-  font-weight: 600;
-}
-
-.dropdown p:first-child:hover {
-  background: transparent; /* Убираем фон при hover для статуса */
-  color: #8B4513 !important;
-}
-
-/* Показываем dropdown при hover на user-avatar */
-.user-avatar:hover .dropdown {
-  display: block;
-}
-
-/* Золотая рамка для премиум-пользователя */
-.user-avatar.premium-user {
-  border: 2px solid #FFD700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
-@media (max-width: 768px) {
-  .header-content {
-    padding: 12px 16px;
-  }
-  
-  .dropdown {
-    right: -10px;
-  }
-  
-  .premium-badge-header {
-    font-size: 16px;
-  }
-}
-
-/* Добавь эти стили в твой существующий Header.css */
-
-/* Премиум-бейдж в логотипе */
-.logo h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Добавь это */
-}
-
+/* Премиум стили */
 .premium-badge-header {
   font-size: 18px;
   animation: crown-glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes crown-glow {
-  from {
-    transform: scale(1);
-    text-shadow: 0 0 5px #FFD700;
-  }
-  to {
-    transform: scale(1.1);
-    text-shadow: 0 0 10px #FFA500, 0 0 20px #FFD700;
-  }
-}
-
-/* Премиум-индикатор в аватаре */
-.user-avatar span {
-  display: flex;
-  align-items: center;
-  gap: 4px; /* Добавь это */
 }
 
 .premium-indicator {
@@ -205,38 +88,19 @@
   animation: sparkle 1.5s ease-in-out infinite;
 }
 
-@keyframes sparkle {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
+.user-avatar.premium-user {
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-/* Стили для премиум-статуса в dropdown */
-.premium-status {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #8B4513 !important; /* Переопределяем цвет */
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 12px;
-  margin-bottom: 8px;
-  text-align: center;
-  border-bottom: 1px solid #e5e7eb; /* Добавляем разделитель */
-}
-
-/* Обновляем стили dropdown для учета премиум-статуса */
+/* Выпадающее меню */
 .dropdown {
   position: absolute;
   top: 100%;
   right: 0;
   width: max-content;
   background: white;
-  padding: 8px 0; /* Меняем на вертикальный padding */
+  padding: 8px 0;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -246,40 +110,44 @@
 
 .dropdown p {
   font-size: 14px;
-  color: #ef4444;
   margin: 0;
   cursor: pointer;
   transition: color 0.2s;
-  padding: 8px 16px; /* Добавляем padding для всех пунктов */
+  padding: 8px 16px;
 }
 
-.dropdown p:hover {
-  color: #dc2626;
-  background: #f9fafb; /* Добавляем фон при hover */
-}
-
-/* Первый пункт (премиум-статус) должен быть другого цвета */
+/* Статус премиума */
 .dropdown p:first-child {
-  color: #8B4513 !important; /* Коричневый для премиума */
+  color: #8B4513 !important;
   font-weight: 600;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .dropdown p:first-child:hover {
-  background: transparent; /* Убираем фон при hover для статуса */
+  background: linear-gradient(135deg, #FFD700, #FFA500);
   color: #8B4513 !important;
 }
 
-/* Показываем dropdown при hover на user-avatar */
+/* Выход */
+.dropdown p:last-child {
+  color: #ef4444;
+}
+
+.dropdown p:last-child:hover {
+  color: #dc2626;
+  background: #f9fafb;
+}
+
 .user-avatar:hover .dropdown {
   display: block;
 }
 
-/* Золотая рамка для премиум-пользователя */
-.user-avatar.premium-user {
-  border: 2px solid #FFD700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
+/* Адаптивность */
 @media (max-width: 768px) {
   .header-content {
     padding: 12px 16px;

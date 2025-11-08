@@ -1,4 +1,3 @@
-// components/TransferMoney.js
 import React, { useState } from 'react';
 import './TransferMoney.css'
 
@@ -9,12 +8,13 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
   const [description, setDescription] = useState('');
 
   const handleTransfer = async () => {
+    // если не заполнены данные для перевода
     if (!fromAccount || !toAccount || !amount) {
       alert('Заполните все поля!');
       return;
     }
 
-    // Проверяем баланс
+    // проверка баланса
     const selectedAccount = accounts.find(acc => acc.number === fromAccount);
     if (selectedAccount && parseFloat(amount) > selectedAccount.balance) {
       alert('❌ Недостаточно средств на счете!');
@@ -22,7 +22,6 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
     }
 
     try {
-      // ПРАВИЛЬНЫЙ вызов - передаем объект
       await onTransfer({
         fromAccount: fromAccount,
         toAccount: toAccount,
@@ -30,7 +29,6 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
         description: description || "Перевод через FinHelper"
       });
       
-      // Сброс формы после успешного перевода
       setFromAccount('');
       setToAccount('');
       setAmount('');
@@ -101,8 +99,7 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
           {isLoading ? '🔄 Перевод...' : '💸 Перевести деньги'}
         </button>
       </div>
-
-      {/* Подсказка для тестирования */}
+{/* для теста */}
       <div className="transfer-hint">
         <h4>💡 Для тестирования:</h4>
         <p>Используйте номера счетов из списка выше</p>

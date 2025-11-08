@@ -6,7 +6,7 @@ const TransactionsList = ({ transactions }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const transactionsPerPage = 5;
 
-  // Функция форматирования денег
+  // денежные функции
   const formatMoney = (amount, showSign = false) => {
     const safeAmount = Number(amount) || 0;
     const absAmount = Math.abs(safeAmount);
@@ -23,7 +23,7 @@ const TransactionsList = ({ transactions }) => {
     
     return safeAmount < 0 ? `-${formatted}` : formatted;
   };
-
+// создание дату и время трансакции
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
       day: 'numeric',
@@ -31,7 +31,7 @@ const TransactionsList = ({ transactions }) => {
       year: 'numeric'
     });
   };
-
+// категории
   const getCategoryIcon = (category) => {
     const icons = {
       'Продукты': '🛒',
@@ -46,12 +46,12 @@ const TransactionsList = ({ transactions }) => {
     return icons[category] || '📦';
   };
 
-  // Категоризация транзакций
+
   const categorizeTransaction = (transaction) => {
     const description = transaction.description.toLowerCase();
     const originalAmount = Number(transaction.amount) || 0;
 
-    // ДОХОДЫ
+    // доходы
     if (description.includes('зарплата') || 
         description.includes('перевод от') || 
         description.includes('входящий перевод') ||
@@ -66,7 +66,7 @@ const TransactionsList = ({ transactions }) => {
       };
     }
     
-    // РАСХОДЫ
+    // расходы
     if (description.includes('жкх') || 
         description.includes('аренда') ||
         description.includes('продукты') ||
@@ -97,7 +97,7 @@ const TransactionsList = ({ transactions }) => {
     };
   };
 
-  // Нормализация транзакций
+  // нормализация транзакций
   const normalizedTransactions = useMemo(() => {
     const seen = new Set();
     
@@ -118,7 +118,7 @@ const TransactionsList = ({ transactions }) => {
     });
   }, [transactions]);
 
-  // Фильтрация
+  // фильтрация
   const filteredTransactions = useMemo(() => {
     switch (filter) {
       case 'income':
@@ -130,7 +130,7 @@ const TransactionsList = ({ transactions }) => {
     }
   }, [normalizedTransactions, filter]);
 
-  // Статистика
+  // создание статистики
   const stats = useMemo(() => {
     const incomes = normalizedTransactions.filter(t => t.amount > 0);
     const expenses = normalizedTransactions.filter(t => t.amount < 0);
@@ -147,22 +147,22 @@ const TransactionsList = ({ transactions }) => {
     };
   }, [normalizedTransactions]);
 
-  // ПАГИНАЦИЯ
+  // пагитации (кол-во всех трансакций)
   const totalPages = Math.ceil(filteredTransactions.length / transactionsPerPage);
   
-  // Транзакции для текущей страницы
+  // транзакции для текущей страницы
   const currentTransactions = useMemo(() => {
     const startIndex = (currentPage - 1) * transactionsPerPage;
     const endIndex = startIndex + transactionsPerPage;
     return filteredTransactions.slice(startIndex, endIndex);
   }, [filteredTransactions, currentPage]);
 
-  // Сброс страницы при изменении фильтра
+  // сброс страницы при изменении фильтра
   React.useEffect(() => {
     setCurrentPage(1);
   }, [filter]);
 
-  // Функции для пагинации
+  // функции для пагинации
   const goToPage = (page) => {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
@@ -179,7 +179,7 @@ const TransactionsList = ({ transactions }) => {
     }
   };
 
-  // Генерация номеров страниц для пагинации
+  // генерация номеров страниц для пагинации
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -228,7 +228,7 @@ const TransactionsList = ({ transactions }) => {
         </div>
       </div>
 
-      {/* Список транзакций */}
+      {/* список транзакций */}
       <div className="transactions-container">
         {currentTransactions.map((transaction, index) => (
           <div 
@@ -280,7 +280,7 @@ const TransactionsList = ({ transactions }) => {
         ))}
       </div>
 
-      {/* Пагинация */}
+      {/* пагинация */}
       {totalPages > 1 && (
         <div className="pagination">
           <button 
