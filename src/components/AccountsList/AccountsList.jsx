@@ -21,7 +21,6 @@ const AccountsList = ({ accounts, totalBalance }) => {
 
   return (
     <div className="accounts-list">
-      {/* Общий баланс */}
       <div className="total-balance">
         <div className="balance-header">
           <h2 className="balance-title">Общий баланс</h2>
@@ -32,7 +31,6 @@ const AccountsList = ({ accounts, totalBalance }) => {
         <p className="balance-amount">{formatMoney(totalBalance)}</p>
       </div>
 
-      {/* Список счетов */}
       <div className="accounts-grid">
         {accounts.map(account => (
           <div key={account.id} className="account-card">
