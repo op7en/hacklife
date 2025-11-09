@@ -109,11 +109,13 @@
   font-size: 14px;
   margin: 0;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: background-color 0.2s;
   padding: 8px 16px;
+  color: #374151; /* Стандартный цвет текста */
 }
 
-.dropdown p:first-child {
+/* Стили только для премиум-статуса */
+.dropdown .premium-status {
   color: #8B4513 !important;
   font-weight: 600;
   background: linear-gradient(135deg, #FFD700, #FFA500);
@@ -124,16 +126,17 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.dropdown p:first-child:hover {
+.dropdown .premium-status:hover {
   background: linear-gradient(135deg, #FFD700, #FFA500);
   color: #8B4513 !important;
 }
 
-.dropdown p:last-child {
+/* Стили для кнопки выхода */
+.dropdown .logout-item {
   color: #ef4444;
 }
 
-.dropdown p:last-child:hover {
+.dropdown .logout-item:hover {
   color: #dc2626;
   background: #f9fafb;
 }

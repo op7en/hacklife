@@ -291,7 +291,9 @@
     padding: 20px 16px;
     border-radius: 12px;
   }
-  
+  .balance-amount {
+    font-size: 20px;
+  }
   .transactions-title,
   .connection-title {
     font-size: 24px;

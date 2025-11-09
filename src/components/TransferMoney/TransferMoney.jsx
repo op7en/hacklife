@@ -71,7 +71,7 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
         </div>
 
         <div className="form-group">
-          <label>Сумма:</label>
+          <label>Сумма перевода:</label>
           <input
             type="number"
             value={amount}
@@ -80,17 +80,6 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
             min="1"
           />
         </div>
-
-        <div className="form-group">
-          <label>Описание:</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Назначение платежа"
-          />
-        </div>
-
         <button 
           onClick={handleTransfer}
           disabled={isLoading || !fromAccount || !toAccount || !amount}
@@ -102,9 +91,9 @@ const TransferMoney = ({ accounts, onTransfer, isLoading }) => {
 {/* для теста */}
       <div className="transfer-hint">
         <h4>💡 Для тестирования:</h4>
-        <p>Используйте номера счетов из списка выше</p>
-        <p>Пример: переведите с одного своего счета на другой</p>
-        <p>Минимальная сумма: 1 рубль</p>
+        <p>• Выберите счет, с которого будете переводить деньги</p>
+        <p>• Введите номер счета получателя (можно скопировать из списка ваших счетов)</p>
+        <p>• Укажите сумму перевода (минимальная сумма: 1 ₽)</p>
       </div>
     </div>
   );

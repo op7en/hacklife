@@ -28,7 +28,7 @@ const Header = ({ isPremium }) => {
             </span>
             <div className="dropdown">
               {isPremium && <p className="premium-status">Premium активен</p>}
-              <p onClick={handleLogout}>Выйти</p>
+              <p className="logout-item" onClick={handleLogout}>Выйти</p>
             </div>
           </div>
         </div>

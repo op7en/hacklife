@@ -74,10 +74,13 @@
   color: #ffffff;
 }
 
-.create-account-form select option[value="abank"],
 .create-account-form select option[value="sbank"] {
   color: #10b981;
   font-weight: 600;
+}
+.create-account-form select option[value="abank"] {
+  font-weight: 600;
+  color: #ef4444;
 }
 
 .create-account-form select option[value="vbank"] {
@@ -116,7 +119,7 @@
 }
 
 .create-account-button:disabled::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -128,8 +131,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .creation-status {
@@ -159,7 +166,31 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+.create-account-hint h4 {
+  margin: 0 0 8px 0;
+  color: #3b82f6;
+  font-size: 1rem;
+}
 
+.create-account-hint p {
+  margin: 4px 0;
+  color: #d1d5db;
+  font-size: 0.9rem;
+}
+
+.input-hint {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.create-account-hint {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 16px;
+}
 
 .create-account-hint h4 {
   margin: 0 0 8px 0;
@@ -178,11 +209,11 @@
     padding: 16px;
     margin: 16px 0;
   }
-  
+
   .create-account-section h3 {
     font-size: 1.3rem;
   }
-  
+
   .create-account-form input,
   .create-account-form select {
     padding: 10px 12px;

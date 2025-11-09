@@ -2,19 +2,12 @@ import React, { useState } from 'react';
 import './CreateAccount.css';
 
 const CreateAccount = ({ onCreateAccount, isLoading }) => {
-  const [bankName, setBankName] = useState('');
   const [selectedBank, setSelectedBank] = useState('abank');
   const [accountType, setAccountType] = useState('personal');
-  const [initialBalance, setInitialBalance] = useState('');
   const [creationStatus, setCreationStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!bankName.trim()) {
-      alert('Введите название счета');
-      return;
-    }
 
     setCreationStatus('🔄 Пробуем создать через банковское API...');
     
@@ -22,8 +15,7 @@ const CreateAccount = ({ onCreateAccount, isLoading }) => {
       const result = await onCreateAccount({
         bankName: selectedBank,
         accountType,
-        initialBalance: initialBalance || 0,
-        customName: bankName.trim()
+        customName: `${selectedBank.toUpperCase()} ${accountType === 'savings' ? 'Накопительный' : accountType === 'business' ? 'Бизнес' : 'Личный'} счет`
       });
       
       setCreationStatus(result.createdVia === 'API' 
@@ -31,10 +23,8 @@ const CreateAccount = ({ onCreateAccount, isLoading }) => {
         : `📝 Счет создан в ${selectedBank.toUpperCase()} (локальный режим)`);
       
       setTimeout(() => {
-        setBankName('');
         setSelectedBank('abank');
         setAccountType('personal');
-        setInitialBalance('');
         setCreationStatus('');
       }, 3000);
       
@@ -62,17 +52,6 @@ const CreateAccount = ({ onCreateAccount, isLoading }) => {
         </div>
 
         <div className="form-group">
-          <label>Название счета:</label>
-          <input
-            type="text"
-            value={bankName}
-            onChange={(e) => setBankName(e.target.value)}
-            placeholder="Например: Основной счет, Накопительный"
-            maxLength={30}
-          />
-        </div>
-
-        <div className="form-group">
           <label>Тип счета:</label>
           <select 
             value={accountType} 
@@ -82,17 +61,6 @@ const CreateAccount = ({ onCreateAccount, isLoading }) => {
             <option value="savings">💰 Накопительный счет</option>
             <option value="business">🏢 Бизнес-счет</option>
           </select>
-        </div>
-
-        <div className="form-group">
-          <label>Начальный баланс (необязательно):</label>
-          <input
-            type="number"
-            value={initialBalance}
-            onChange={(e) => setInitialBalance(e.target.value)}
-            placeholder="0"
-            min="0"
-          />
         </div>
 
         {creationStatus && (
@@ -106,14 +74,18 @@ const CreateAccount = ({ onCreateAccount, isLoading }) => {
 
         <button 
           type="submit"
-          disabled={isLoading || !bankName.trim()}
+          disabled={isLoading} // Убрал проверку на bankName
           className="create-account-button"
         >
           {isLoading ? '🔄 Создание...' : '✅ Создать счет'}
         </button>
       </form>
 
-
+      <div className="create-account-hint">
+        <h4>💡 Примечание:</h4>
+        <p>• Все счета создаются с начальным балансом 0 рублей</p>
+        <p>• Для пополнения счета используйте функцию "Перевод между счетами"</p>
+      </div>
     </div>
   );
 };

@@ -243,7 +243,6 @@ export const useBanks = () => {
     try {
       console.log(`🔐 Получаем согласие для создания счетов в ${bankId}...`);
       
-      // 1. Получаем токен банка
       const tokenResponse = await fetch(
         `https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
         {
@@ -397,7 +396,6 @@ export const useBanks = () => {
     try {
       console.log(`🏦 Создаем реальный счет в ${bankId} через bank_token...`);
       
-      // 1. Получаем токен банка
       const tokenResponse = await fetch(
         `https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
         {
@@ -416,11 +414,9 @@ export const useBanks = () => {
       const tokenData = await tokenResponse.json();
       const bankToken = tokenData.access_token;
 
-      // 2. Получаем конфиг
       const config = bankConfigs[bankId];
       const { clientId, consentId } = config;
 
-      // 3. Создаем счет через API с bank_token
       const createAccountResponse = await fetch(
         `https://${bankId}.open.bankingapi.ru/accounts?client_id=${clientId}`,
         {
@@ -603,7 +599,7 @@ export const useBanks = () => {
 
       setTimeout(() => {
         try {
-          const { fromAccount, toAccount, amount, description = "Перевод через FinHelper" } = transferData;
+          const { fromAccount, toAccount, amount = "Перевод через FinHelper" } = transferData;
 
           const fromAccountData = accounts.find((acc) => acc.number === fromAccount);
           if (!fromAccountData) {
