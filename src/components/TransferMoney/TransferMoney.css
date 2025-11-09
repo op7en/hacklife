@@ -92,7 +92,6 @@
   transform: translateY(0);
 }
 
-/* Анимация загрузки */
 .transfer-button:disabled::after {
   content: '';
   display: inline-block;
@@ -110,7 +109,6 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Стили для выпадающего списка */
 .form-group select {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%239ca3af' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
@@ -120,24 +118,20 @@
   padding-right: 40px;
 }
 
-/* Стили для placeholder */
 .form-group input::placeholder {
   color: #9ca3af;
 }
 
-/* Стили для option */
 .form-group select option {
   background: #374151;
   color: #ffffff;
 }
 
-/* Подсветка выбранного счета */
 .form-group select option:checked {
   background: #3b82f6;
   color: white;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .transfer-section {
     padding: 16px;

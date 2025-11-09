@@ -95,7 +95,6 @@ const CreateAccount = ({ onCreateAccount, isLoading }) => {
           />
         </div>
 
-        {/* Статус создания */}
         {creationStatus && (
           <div className={`creation-status ${
             creationStatus.includes('✅') ? 'success' : 

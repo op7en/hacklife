@@ -25,7 +25,7 @@ const Dashboard = () => {
     connectBank,
     refreshData,
     makeTransfer,
-    createAccount, // ← ДОБАВЬ ЭТУ СТРОЧКУ
+    createAccount, 
   } = useBanks();
 
   return (

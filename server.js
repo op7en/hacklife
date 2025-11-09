@@ -8,7 +8,6 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// Прокси для авторизации
 app.post('/api/auth', async (req, res) => {
   try {
     console.log('🔐 Проксируем запрос авторизации...');
@@ -35,7 +34,6 @@ app.post('/api/auth', async (req, res) => {
   }
 });
 
-// Прокси для счетов
 app.get('/api/accounts', async (req, res) => {
   try {
     const token = req.headers.authorization;
@@ -60,15 +58,11 @@ app.listen(PORT, () => {
 });
 
 
-// Добавь в твой server.js после существующих endpoints:
-
-// Прокси для создания согласия на перевод
 app.post('/api/payment-consent', async (req, res) => {
   try {
     console.log('🔐 Проксируем создание платежного согласия...');
     const { bankId, fromAccount, toAccount, amount, client_id } = req.body;
     
-    // 1. Сначала получаем токен банка
     const tokenResponse = await fetch(`https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`, {
       method: 'POST',
       headers: {
@@ -84,7 +78,6 @@ app.post('/api/payment-consent', async (req, res) => {
     const tokenData = await tokenResponse.json();
     const bankToken = tokenData.access_token;
 
-    // 2. Создаем согласие через банковский API
     const consentResponse = await fetch(`https://${bankId}.open.bankingapi.ru/payment-consents/request`, {
       method: 'POST',
       headers: {
@@ -129,13 +122,11 @@ app.post('/api/payment-consent', async (req, res) => {
   }
 });
 
-// Прокси для выполнения платежа
 app.post('/api/payment', async (req, res) => {
   try {
     console.log('💸 Проксируем выполнение платежа...');
     const { bankId, consentId, fromAccount, toAccount, amount, description } = req.body;
     
-    // 1. Получаем токен банка
     const tokenResponse = await fetch(`https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`, {
       method: 'POST',
       headers: {
@@ -147,7 +138,6 @@ app.post('/api/payment', async (req, res) => {
     const tokenData = await tokenResponse.json();
     const bankToken = tokenData.access_token;
 
-    // 2. Выполняем платеж
     const paymentResponse = await fetch(`https://${bankId}.open.bankingapi.ru/payments`, {
       method: 'POST',
       headers: {

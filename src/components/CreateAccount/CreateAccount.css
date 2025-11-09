@@ -74,7 +74,6 @@
   color: #ffffff;
 }
 
-/* Стили для разных банков в выпадающем списке */
 .create-account-form select option[value="abank"],
 .create-account-form select option[value="sbank"] {
   color: #10b981;

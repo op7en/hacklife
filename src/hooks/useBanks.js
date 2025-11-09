@@ -9,7 +9,6 @@ export const useBanks = () => {
   const [isPremium, setIsPremium] = useState(false);
   const [premiumExpiry, setPremiumExpiry] = useState(null);
 
-  // Конфигурация для каждого банка
   const bankConfigs = {
     vbank: {
       clientId: "team003-1",
@@ -25,7 +24,6 @@ export const useBanks = () => {
     },
   };
 
-  // Функция для мок-данных при падении API
   const mockBankConnection = async (bankId) => {
     console.log(`🔄 Используем мок-данные для ${bankId}...`);
     
@@ -94,7 +92,6 @@ export const useBanks = () => {
       try {
         console.log(`🔥 Пробуем реальное API для ${bankId}...`);
 
-        // 1. Получаем токен банка
         const tokenResponse = await fetch(
           `https://${bankId}.open.bankingapi.ru/auth/bank-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
           {
@@ -113,7 +110,6 @@ export const useBanks = () => {
         const tokenData = await tokenResponse.json();
         const bankToken = tokenData.access_token;
 
-        // 2. Получаем конфиг для банка
         const config = bankConfigs[bankId];
         if (!config) {
           throw new Error(`Нет конфигурации для банка ${bankId}`);
@@ -121,7 +117,6 @@ export const useBanks = () => {
 
         const { clientId, consentId } = config;
 
-        // 3. Получаем счета
         const accountsResponse = await fetch(
           `https://${bankId}.open.bankingapi.ru/accounts?client_id=${clientId}`,
           {
@@ -141,7 +136,6 @@ export const useBanks = () => {
 
         const accountsData = await accountsResponse.json();
 
-        // 4. Получаем балансы для каждого счета
         const accountsWithBalances = [];
 
         for (const account of accountsData.data?.account || []) {
@@ -180,7 +174,6 @@ export const useBanks = () => {
           }
         }
 
-        // 5. Получаем транзакции для первого счета
         if (accountsWithBalances.length > 0) {
           try {
             const firstAccountId = accountsWithBalances[0].id;
@@ -220,7 +213,6 @@ export const useBanks = () => {
           }
         }
 
-        // 6. Сохраняем данные
         setAccounts((prev) => {
           const filtered = prev.filter((acc) => !acc.bankName.includes(bankId.toUpperCase()));
           return [...filtered, ...accountsWithBalances];
@@ -247,7 +239,6 @@ export const useBanks = () => {
     }
   };
 
-  // Функция для получения согласия на управление счетами в VBank
   const createAccountConsent = async (bankId) => {
     try {
       console.log(`🔐 Получаем согласие для создания счетов в ${bankId}...`);
@@ -271,7 +262,6 @@ export const useBanks = () => {
       const tokenData = await tokenResponse.json();
       const bankToken = tokenData.access_token;
 
-      // 2. Создаем согласие на управление счетами
       const config = bankConfigs[bankId];
       const { clientId } = config;
 
@@ -311,12 +301,10 @@ export const useBanks = () => {
     }
   };
 
-  // Функция РЕАЛЬНОГО создания счета через client_token (для ABank/SBank)
   const createRealAccount = async (bankId, accountData) => {
     try {
       console.log(`🏦 Создаем реальный счет в ${bankId} через client_token...`);
       
-      // 1. Получаем client_token (не требует согласия!)
       const tokenResponse = await fetch(
         `https://${bankId}.open.bankingapi.ru/auth/client-token?client_id=team003&client_secret=WzuKQTQrmefPsCLAB8OtkP5gXjO38iBF`,
         {
@@ -364,7 +352,6 @@ export const useBanks = () => {
       const accountDataResponse = await createAccountResponse.json();
       console.log('✅ Счет создан через API:', accountDataResponse);
 
-      // 3. Обрабатываем ответ и создаем локальный объект счета
       const newAccount = {
         id: accountDataResponse.data?.accountId || `real-${Date.now()}`,
         name: accountData.customName || (accountData.accountType === 'savings' ? 'Накопительный счет' : 'Основной счет'),
@@ -378,10 +365,8 @@ export const useBanks = () => {
         createdVia: 'API'
       };
 
-      // 4. Добавляем счет в состояние
       setAccounts(prev => [...prev, newAccount]);
 
-      // 5. Добавляем транзакцию начального баланса
       if (accountData.initialBalance > 0) {
         const initialTransaction = {
           id: `initial-${Date.now()}`,
@@ -408,7 +393,6 @@ export const useBanks = () => {
     }
   };
 
-  // Функция РЕАЛЬНОГО создания счета через bank_token (для VBank)
   const createRealAccountWithConsent = async (bankId, accountData) => {
     try {
       console.log(`🏦 Создаем реальный счет в ${bankId} через bank_token...`);
@@ -461,16 +445,13 @@ export const useBanks = () => {
         const errorText = await createAccountResponse.text();
         console.log('❌ Ошибка создания:', errorText);
         
-        // Если ошибка согласия, пробуем получить новое согласие
         if (createAccountResponse.status === 403) {
           console.log('🔄 Пробуем получить новое согласие...');
           const newConsentId = await createAccountConsent(bankId);
           
           if (newConsentId) {
-            // Обновляем конфиг с новым consentId
             bankConfigs[bankId].consentId = newConsentId;
             
-            // Пробуем снова с новым согласием
             return await createRealAccountWithConsent(bankId, accountData);
           }
         }
@@ -481,7 +462,6 @@ export const useBanks = () => {
       const accountDataResponse = await createAccountResponse.json();
       console.log('✅ Счет создан через API:', accountDataResponse);
 
-      // 4. Обрабатываем ответ
       const newAccount = {
         id: accountDataResponse.data?.accountId || `real-${Date.now()}`,
         name: accountData.customName || (accountData.accountType === 'savings' ? 'Накопительный счет' : 'Основной счет'),
@@ -523,7 +503,6 @@ export const useBanks = () => {
     }
   };
 
-  // Локальное создание (fallback)
   const createMockAccount = async (accountData) => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -569,7 +548,6 @@ export const useBanks = () => {
     });
   };
 
-  // Главная функция создания счета (пробует API, потом fallback)
   const createAccount = async (accountData) => {
     setIsLoading(true);
     setError(null);
@@ -577,7 +555,6 @@ export const useBanks = () => {
     try {
       const { bankName } = accountData;
       
-      // Для ABank и SBank - используем client_token (без согласия)
       if (bankName === 'abank' || bankName === 'sbank') {
         try {
           console.log('🔥 Пробуем создать счет через client_token...');
@@ -588,7 +565,6 @@ export const useBanks = () => {
           return await createMockAccount(accountData);
         }
       }
-      // Для VBank - используем bank_token (требует согласие)
       else if (bankName === 'vbank') {
         try {
           console.log('🔥 Пробуем создать счет в VBank через bank_token...');
